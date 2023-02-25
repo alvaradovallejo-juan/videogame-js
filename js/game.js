@@ -46,6 +46,8 @@ function startGame() {
     const mapRows = map.trim().split('\n');
     const mapRowCols = mapRows.map(row => row.trim().split(''));
 
+    game.clearRect(0,0,canvasSize,canvasSize);
+
     /* Map drawing using the bidimensional array */
     mapRowCols.forEach((row, rowIndex) => {
         row.forEach((col, colIndex) => {
@@ -53,7 +55,7 @@ function startGame() {
             const posX = elementSize * colIndex;
             const posY = elementSize * (rowIndex + 1);
 
-            if(col == 'O') {
+            if(col == 'O' && (!playerPosition.x && !playerPosition.y)) {
                 playerPosition.x = posX;
                 playerPosition.y = posY;
             }
@@ -101,20 +103,20 @@ function moveByKeys(event) {
 function moveUp() {
     console.log('Arriba');
     playerPosition.y -= elementSize;
-    movePlayer();
+    startGame();
 }
 function moveLeft() {
     console.log('Izquierda');
     playerPosition.x -= elementSize;
-    movePlayer();
+    startGame();
 }
 function moveRight() {
     console.log('Derecha');
     playerPosition.x += elementSize;
-    movePlayer();
+    startGame();
 }
 function moveDown() {
     console.log('Abajo');
     playerPosition.y += elementSize;
-    movePlayer();
+    startGame();
 }
