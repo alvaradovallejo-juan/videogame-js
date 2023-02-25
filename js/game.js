@@ -56,8 +56,8 @@ function startGame() {
             const posY = elementSize * (rowIndex + 1);
 
             if(col == 'O' && (!playerPosition.x && !playerPosition.y)) {
-                playerPosition.x = posX;
-                playerPosition.y = posY;
+                playerPosition.x = posX / elementSize;
+                playerPosition.y = posY / elementSize;
             }
 
             game.fillText(emoji, posX, posY);
@@ -82,7 +82,7 @@ function startGame() {
 }
 
 function movePlayer() {
-    game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
+    game.fillText(emojis['PLAYER'], (playerPosition.x * elementSize), (playerPosition.y * elementSize));
 }
 
 /* Reading and reacting to keys and clicks of motion */
@@ -102,21 +102,29 @@ function moveByKeys(event) {
 }
 function moveUp() {
     console.log('Arriba');
-    playerPosition.y -= elementSize;
-    startGame();
+    if(playerPosition.y > 1) {
+        playerPosition.y -= 1;
+        startGame();
+    }
 }
 function moveLeft() {
     console.log('Izquierda');
-    playerPosition.x -= elementSize;
-    startGame();
+    if(playerPosition.x > 0) {
+        playerPosition.x -= 1;
+        startGame();
+    }
 }
 function moveRight() {
     console.log('Derecha');
-    playerPosition.x += elementSize;
-    startGame();
+    if(playerPosition.x < 9) {
+        playerPosition.x += 1;
+        startGame();
+    }
 }
 function moveDown() {
     console.log('Abajo');
-    playerPosition.y += elementSize;
-    startGame();
+    if(playerPosition.y < 10) {
+        playerPosition.y += 1;
+        startGame();
+    }
 }
