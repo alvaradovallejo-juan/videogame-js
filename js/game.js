@@ -13,6 +13,11 @@ const playerPosition = {
     x: undefined,
     y: undefined
 }
+const giftPosition = {
+    x: undefined,
+    y: undefined
+}
+let enemyPositions = [];
 
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
@@ -42,25 +47,34 @@ function startGame() {
     game.font = elementSize + 'px Verdana';
     
     /* The map strings are transformed into a bidimensional array */
-    const map = maps[0];
+    const map = maps[1];
     const mapRows = map.trim().split('\n');
     const mapRowCols = mapRows.map(row => row.trim().split(''));
 
+    enemyPositions = [];
     game.clearRect(0,0,canvasSize,canvasSize);
 
     /* Map drawing using the bidimensional array */
     mapRowCols.forEach((row, rowIndex) => {
         row.forEach((col, colIndex) => {
             const emoji = emojis[col];
-            const posX = elementSize * colIndex;
-            const posY = elementSize * (rowIndex + 1);
+            const posX = colIndex;
+            const posY = rowIndex + 1;
 
             if(col == 'O' && (!playerPosition.x && !playerPosition.y)) {
-                playerPosition.x = posX / elementSize;
-                playerPosition.y = posY / elementSize;
+                playerPosition.x = posX;
+                playerPosition.y = posY;
+            } else if(col == 'I') {
+                giftPosition.x = posX;
+                giftPosition.y = posY;
+            } else if(col == 'X') {
+                enemyPositions.push({
+                    x: posX,
+                    y: posY
+                })
             }
 
-            game.fillText(emoji, posX, posY);
+            game.fillText(emoji, posX * elementSize, posY * elementSize);
         });
     });
 
@@ -82,6 +96,22 @@ function startGame() {
 }
 
 function movePlayer() {
+    const giftCollisionX = playerPosition.x == giftPosition.x;
+    const giftCollisionY = playerPosition.y == giftPosition.y;
+    if(giftCollisionX && giftCollisionY) {
+        console.log('GANASTEEEEE!');
+    }
+
+    const enemyCollision = enemyPositions.find(enemy => {
+        const enemyCollisionX = enemy.x == playerPosition.x;
+        const enemyCollisionY = enemy.y == playerPosition.y;
+        return enemyCollisionX && enemyCollisionY;
+    });
+    if(enemyCollision) {
+        console.log('EXPLOSIOOOOON!!');
+        console.log(playerPosition.x, playerPosition.y);
+    }
+
     game.fillText(emojis['PLAYER'], (playerPosition.x * elementSize), (playerPosition.y * elementSize));
 }
 
