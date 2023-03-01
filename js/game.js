@@ -9,6 +9,9 @@ const btnDown = document.querySelector('#down');
 
 let canvasSize;
 let elementSize;
+let level = 0;
+let lives = 3;
+
 const playerPosition = {
     x: undefined,
     y: undefined
@@ -47,7 +50,12 @@ function startGame() {
     game.font = elementSize + 'px Verdana';
     
     /* The map strings are transformed into a bidimensional array */
-    const map = maps[1];
+    const map = maps[level];
+    if(!map) {
+        gameWin();
+        return;
+    }
+
     const mapRows = map.trim().split('\n');
     const mapRowCols = mapRows.map(row => row.trim().split(''));
 
@@ -99,7 +107,7 @@ function movePlayer() {
     const giftCollisionX = playerPosition.x == giftPosition.x;
     const giftCollisionY = playerPosition.y == giftPosition.y;
     if(giftCollisionX && giftCollisionY) {
-        console.log('GANASTEEEEE!');
+        levelWin();
     }
 
     const enemyCollision = enemyPositions.find(enemy => {
@@ -108,11 +116,35 @@ function movePlayer() {
         return enemyCollisionX && enemyCollisionY;
     });
     if(enemyCollision) {
-        console.log('EXPLOSIOOOOON!!');
-        console.log(playerPosition.x, playerPosition.y);
+        levelFail();
     }
 
     game.fillText(emojis['PLAYER'], (playerPosition.x * elementSize), (playerPosition.y * elementSize));
+}
+
+function levelWin() {
+    console.log('Subiste de nivel');
+    level++;
+    startGame();
+}
+
+function levelFail() {
+    if (lives < 1) {
+        console.log('GAME OVER!!!');
+        lives = 3;
+        level = 0;
+    } else {
+        console.log('EXPLOSIOOOOOON!!');
+        lives--;
+    }
+    console.log('Vidas: ' + lives);
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+    startGame();
+}
+
+function gameWin() {
+    console.log('Terminaste el juego!!');
 }
 
 /* Reading and reacting to keys and clicks of motion */
