@@ -10,6 +10,7 @@ const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
 const spanRecord = document.querySelector('#record');
 const pResult = document.querySelector('#result');
+const btnReset = document.querySelector('#reset');
 
 let canvasSize;
 let elementSize;
@@ -31,6 +32,7 @@ let enemyPositions = [];
 
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
+btnReset.addEventListener('click', playAgain);
 
 /* ----------------------------------------------------------------- */
 
@@ -81,6 +83,7 @@ function startGame() {
     mapRowCols.forEach((row, rowIndex) => {
         row.forEach((col, colIndex) => {
             const emoji = emojis[col];
+            console.log(emoji);
             const posX = colIndex;
             const posY = rowIndex + 1;
 
@@ -96,8 +99,8 @@ function startGame() {
                     y: posY
                 })
             }
-
-            game.fillText(emoji, posX * elementSize, posY * elementSize);
+            // game.fillText(emoji, posX * elementSize, posY * elementSize);
+            game.drawImage(emoji, posX * elementSize, (posY-1) * elementSize, elementSize, elementSize);
         });
     });
 
@@ -133,8 +136,8 @@ function movePlayer() {
     if(enemyCollision) {
         levelFail();
     }
-
-    game.fillText(emojis['PLAYER'], (playerPosition.x * elementSize), (playerPosition.y * elementSize));
+    game.drawImage(emojis['PLAYER'], playerPosition.x * elementSize, ((playerPosition.y - 1) * elementSize) + 5, elementSize, elementSize);
+    // game.fillText(emojis['PLAYER'], (playerPosition.x * elementSize), (playerPosition.y * elementSize));
 }
 
 function levelWin() {
@@ -179,8 +182,12 @@ function gameWin() {
     }
 }
 
+function playAgain() {
+    location.reload();
+}
+
 function showLives() {
-    const heartsArray =  Array(lives).fill(emojis['HEART'] + " ")
+    const heartsArray =  Array(lives).fill(" 🤍 ");
     spanLives.innerHTML = "";
     heartsArray.forEach(heart => spanLives.append(heart));
 }
@@ -220,6 +227,7 @@ function moveLeft() {
     if(playerPosition.x > 0) {
         playerPosition.x -= 1;
         startGame();
+        
     }
 }
 function moveRight() {

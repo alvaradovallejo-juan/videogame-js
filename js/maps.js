@@ -1,13 +1,30 @@
+ship = new Image();
+ship.src = '../assets/space-ship-svgrepo-com1.svg';
+
+asteroids = new Image();
+asteroids.src = '../assets/asteroid-2-svgrepo-com.svg';
+
+empty = new Image();
+empty.src = '';
+
+galaxy = new Image();
+galaxy.src = '../assets/galaxy-svgrepo-com.svg';
+
+flag = new Image();
+flag.src = '../assets/flag-svgrepo-com.svg';
+
+heart = new Image();
+heart.src = '../assets/heart-svgrepo-com.svg';
+
 const emojis = {
-    "-": " ",
-    O: "🚪",
-    X: "💣",
-    I: "🎁",
-    PLAYER: "💀",
-    BOMB_COLLISION: "🔥",
-    GAME_OVER: "👎",
-    WIN: "🏆",
-    HEART: "🤍"
+    "-": empty,
+    O: galaxy,
+    X: asteroids,
+    I: flag,
+    PLAYER: ship,
+    BOMB_COLLISION: asteroids,
+    GAME_OVER: asteroids,
+    WIN: asteroids
   };
   const maps = [];
   maps.push(`
